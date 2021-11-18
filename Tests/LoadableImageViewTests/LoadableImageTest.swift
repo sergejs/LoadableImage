@@ -5,6 +5,7 @@
 //  Created by Sergejs Smirnovs on 09.11.21.
 //
 
+import Cache
 import Combine
 import HTTPClient
 @testable import LoadableImageView
@@ -17,7 +18,7 @@ class LoadableImageTest: XCTestCase {
     let mockHttp = MockHTTPClient()
     let cache = ImageCache()
 
-    func testBasicUsage() {
+    func testBasicUsage() async {
         let data = UIImage(systemName: "square.and.arrow.up")!.pngData()!
         let image = UIImage(data: data)!
 
@@ -38,23 +39,27 @@ class LoadableImageTest: XCTestCase {
             httpClient: mockHttp,
             cache: cache
         )
-        sut.didChange
+
+        let didChangeSubject = sut.didChange
+
+        didChangeSubject
             .sink { _ in
                 expectation.fulfill()
             }
             .store(in: &disposeBag)
 
-        sut.onAppear()
+        await sut.onAppear()
         wait(for: [expectation], timeout: 10)
-        XCTAssertEqual(sut.image.size, image.size)
+        let newImage = sut.image
+        XCTAssertEqual(newImage.size, image.size)
     }
 
-    func testCache() {
+    func testCache() async {
         let data = UIImage(systemName: "square.and.arrow.up")!.pngData()!
         let image = UIImage(data: data)!
 
         let expectation = expectation(description: "Loading")
-        cache.insert(image, forKey: "url-string")
+        await cache.insert(image, forKey: "url-string")
 
         mockHttp.then { request in
             XCTFail("Unexpected http request")
@@ -73,14 +78,17 @@ class LoadableImageTest: XCTestCase {
             httpClient: mockHttp,
             cache: cache
         )
-        sut.didChange
+
+        let didChangeSubject = sut.didChange
+
+        didChangeSubject
             .sink { newImage in
                 expectation.fulfill()
                 XCTAssertEqual(newImage.size, image.size)
             }
             .store(in: &disposeBag)
 
-        sut.onAppear()
+        await sut.onAppear()
         wait(for: [expectation], timeout: 10)
         XCTAssertEqual(sut.image.size, image.size)
     }

@@ -19,7 +19,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/sergejs/cache.git", from: "0.0.1"),
-        .package(url: "https://github.com/sergejs/http-client.git", from: "0.0.6"),
+        .package(url: "https://github.com/sergejs/http-client.git", from: "0.0.7"),
+        .package(url: "https://github.com/sergejs/ServiceContainer.git", from: "0.0.1"),
     ],
     targets: [
         .target(
@@ -27,6 +28,7 @@ let package = Package(
             dependencies: [
                 .product(name: "Cache", package: "cache"),
                 .product(name: "HTTPClient", package: "http-client"),
+                .product(name: "ServiceContainer", package: "ServiceContainer"),
             ]
         ),
         .testTarget(

@@ -5,17 +5,23 @@
 //  Created by Sergejs Smirnovs on 09.11.21.
 //
 
+import Cache
 import HTTPClient
+import ServiceContainer
 import SwiftUI
 
 public struct ImageView: View {
-    // MARK: Lifecycle
+    @ObservedObject
+    var imageLoader: ImageLoader
+    @State
+    var image = UIImage()
+    let contentMode: ContentMode
 
     public init(
         withURL url: String,
         contentMode: ContentMode = .fill,
-        httpClient: HTTPClientRequestDispatcher,
-        cache: ImageCache
+        httpClient: HTTPClientRequestDispatcher = InjectedValues[\.httpClient],
+        cache: ImageCache = InjectedValues[\.imageCache]
     ) {
         self.contentMode = contentMode
         imageLoader = ImageLoader(
@@ -34,14 +40,10 @@ public struct ImageView: View {
             .onReceive(imageLoader.didChange) { image in
                 self.image = image
             }
-            .onAppear(perform: imageLoader.onAppear)
+            .onAppear {
+                Task {
+                    await imageLoader.onAppear()
+                }
+            }
     }
-
-    // MARK: Internal
-
-    @ObservedObject
-    internal var imageLoader: ImageLoader
-    @State
-    internal var image = UIImage()
-    internal let contentMode: ContentMode
 }

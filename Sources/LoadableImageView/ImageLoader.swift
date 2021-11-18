@@ -10,12 +10,22 @@ import Combine
 import HTTPClient
 import SwiftUI
 
-public typealias ImageCache = Cache<String, UIImage>
+final class ImageLoader: ObservableObject {
+    let didChange = PassthroughSubject<UIImage, Never>()
 
-public final class ImageLoader: ObservableObject {
-    // MARK: Lifecycle
+    var image = UIImage() {
+        didSet {
+            DispatchQueue.main.async {
+                self.didChange.send(self.image)
+            }
+        }
+    }
 
-    public init(
+    private let httpClient: HTTPClientRequestDispatcher
+    private let cache: ImageCache
+    private let urlString: String
+
+    init(
         urlString: String,
         httpClient: HTTPClientRequestDispatcher,
         cache: ImageCache
@@ -25,19 +35,13 @@ public final class ImageLoader: ObservableObject {
         self.urlString = urlString
     }
 
-    // MARK: Public
-
-    public var didChange = PassthroughSubject<UIImage, Never>()
-
-    public func onAppear() {
-        Task {
-            await loadImage()
-        }
+    func onAppear() async {
+        await loadImage()
     }
 
     private func loadImage() async {
-        if let cachedImage = cache.value(forKey: urlString) {
-            update(
+        if let cachedImage = await cache.value(forKey: urlString) {
+            await update(
                 image: cachedImage,
                 forUrl: urlString
             )
@@ -49,38 +53,22 @@ public final class ImageLoader: ObservableObject {
         else {
             return
         }
+
         let request = HTTPRequest(urlComponents: urlComponents)
         let response = try? await httpClient.execute(request: request)
         if let data = response?.body, let image = UIImage(data: data) {
-            update(
+            await update(
                 image: image,
                 forUrl: urlString
             )
         }
     }
 
-    // MARK: Internal
-
-    var image = UIImage() {
-        didSet {
-            didChange.send(image)
-        }
-    }
-
-    // MARK: Private
-
-    private let httpClient: HTTPClientRequestDispatcher
-    private let cache: ImageCache
-    private let urlString: String
-
     private func update(
         image: UIImage,
         forUrl urlString: String
-    ) {
-        cache.insert(image, forKey: urlString)
-
-        DispatchQueue.main.async { [weak self] in
-            self?.image = image
-        }
+    ) async {
+        self.image = image
+        await cache.insert(image, forKey: urlString)
     }
 }

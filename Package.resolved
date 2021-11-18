@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/sergejs/cache.git",
         "state": {
           "branch": null,
-          "revision": "2ef152a20188f4acd2847b4b1deac22c09c4c5fe",
-          "version": "0.0.1"
+          "revision": "75614c97184e719719f1984fb820c4c4d08a30b9",
+          "version": "0.0.5"
         }
       },
       {
@@ -24,8 +24,17 @@
         "repositoryURL": "https://github.com/sergejs/http-client.git",
         "state": {
           "branch": null,
-          "revision": "f82fcb99deaeb3c3fbe38582fbe3ca586627481b",
-          "version": "0.0.6"
+          "revision": "fb6b5b57c16c2fc3bf50f1e783d85abfc0e6b266",
+          "version": "0.1.0"
+        }
+      },
+      {
+        "package": "ServiceContainer",
+        "repositoryURL": "https://github.com/sergejs/ServiceContainer.git",
+        "state": {
+          "branch": null,
+          "revision": "c76d38291c5352ada3d4949b8874cebedd3e7da8",
+          "version": "0.0.1"
         }
       },
       {
