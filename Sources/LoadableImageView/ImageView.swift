@@ -14,36 +14,49 @@ public struct ImageView: View {
     @ObservedObject
     var imageLoader: ImageLoader
     @State
-    var image = UIImage()
+    var state: ImageLoader.State = .none
     let contentMode: ContentMode
 
     public init(
         withURL url: String,
         contentMode: ContentMode = .fill,
+        placeholderView: AnyView? = nil,
+        failView: AnyView? = nil,
         httpClient: HTTPClientRequestDispatcher = InjectedValues[\.httpClient],
         cache: ImageCache = InjectedValues[\.imageCache]
     ) {
         self.contentMode = contentMode
         imageLoader = ImageLoader(
             urlString: url,
+            placeholderView: placeholderView,
+            failView: failView,
             httpClient: httpClient,
             cache: cache
         )
     }
 
-    // MARK: Public
-
     public var body: some View {
-        Image(uiImage: image)
-            .resizable()
-            .aspectRatio(contentMode: contentMode)
-            .onReceive(imageLoader.didChange) { image in
-                self.image = image
-            }
-            .onAppear {
-                Task {
-                    await imageLoader.onAppear()
-                }
-            }
+        VStack {
+            imageView(state)
+        }
+        .onReceive(imageLoader.didChange) { state in
+            self.state = state
+        }
+    }
+
+    @ViewBuilder
+    func imageView(_ state: ImageLoader.State) -> some View {
+        switch state {
+            case .none:
+                EmptyView()
+            case let .loading(view):
+                view
+            case let .loaded(image):
+                Image(uiImage: image)
+                    .resizable()
+                    .aspectRatio(contentMode: contentMode)
+            case let .failed(view):
+                view
+        }
     }
 }
