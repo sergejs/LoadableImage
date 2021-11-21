@@ -40,7 +40,12 @@ public struct ImageView: View {
             imageView(state)
         }
         .onReceive(imageLoader.didChange) { state in
-            self.state = state
+            DispatchQueue.main.async {
+                self.state = state
+            }
+        }
+        .onAppear {
+            self.imageLoader.onAppear()
         }
     }
 

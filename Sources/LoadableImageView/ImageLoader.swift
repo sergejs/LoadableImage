@@ -38,24 +38,27 @@ final class ImageLoader: ObservableObject {
         self.urlString = urlString
         self.placeholderView = placeholderView
         self.failView = failView
+        update(with: .none)
+    }
 
+    func onAppear() {
         Task {
             await loadImage()
         }
     }
 
     private func loadImage() async {
-        await update(with: .loading(placeholderView))
+        update(with: .loading(placeholderView))
 
         if let cachedImage = await cache.value(forKey: urlString) {
-            await update(with: .loaded(cachedImage))
+            update(with: .loaded(cachedImage))
             return
         }
 
         guard
             let urlComponents = URLComponents(string: urlString)
         else {
-            await update(with: .failed(failView))
+            update(with: .failed(failView))
             return
         }
 
@@ -63,18 +66,17 @@ final class ImageLoader: ObservableObject {
             let request = HTTPRequest(urlComponents: urlComponents)
             let response = try await httpClient.execute(request: request)
             if let data = response.body, let image = UIImage(data: data) {
-                await update(with: .loaded(image))
+                update(with: .loaded(image))
                 await cache.insert(image, forKey: urlString)
             } else {
-                await update(with: .failed(failView))
+                update(with: .failed(failView))
             }
         } catch {
-            await update(with: .failed(failView))
+            update(with: .failed(failView))
         }
     }
 
-    @MainActor
-    private func update(with state: State) async {
+    private func update(with state: State) {
         didChange.send(state)
     }
 }

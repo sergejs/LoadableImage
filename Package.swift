@@ -6,10 +6,7 @@ import PackageDescription
 let package = Package(
     name: "LoadableImageView",
     platforms: [
-        .macOS(.v12),
-        .iOS(.v13),
-        .watchOS(.v6),
-        .tvOS(.v13),
+        .iOS(.v15),
     ],
     products: [
         .library(
@@ -18,16 +15,16 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/sergejs/cache.git", from: "0.0.1"),
-        .package(url: "https://github.com/sergejs/http-client.git", from: "0.0.7"),
-        .package(url: "https://github.com/sergejs/ServiceContainer.git", from: "0.0.1"),
+        .package(url: "https://github.com/sergejs/Cache.git", .branch("main")),
+        .package(url: "https://github.com/sergejs/HTTPClient.git", .branch("main")),
+        .package(url: "https://github.com/sergejs/ServiceContainer.git", .branch("main")),
     ],
     targets: [
         .target(
             name: "LoadableImageView",
             dependencies: [
-                .product(name: "Cache", package: "cache"),
-                .product(name: "HTTPClient", package: "http-client"),
+                .product(name: "Cache", package: "Cache"),
+                .product(name: "HTTPClient", package: "HTTPClient"),
                 .product(name: "ServiceContainer", package: "ServiceContainer"),
             ]
         ),
