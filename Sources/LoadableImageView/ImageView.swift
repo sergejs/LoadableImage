@@ -39,10 +39,8 @@ public struct ImageView: View {
         VStack {
             imageView(state)
         }
-        .onReceive(imageLoader.didChange) { state in
-            DispatchQueue.main.async {
-                self.state = state
-            }
+        .onReceive(imageLoader.didChange.receive(on:RunLoop.main)) { state in
+            self.state = state
         }
         .onAppear {
             self.imageLoader.onAppear()

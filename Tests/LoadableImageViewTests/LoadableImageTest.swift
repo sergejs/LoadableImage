@@ -44,7 +44,9 @@ class LoadableImageTest: XCTestCase {
         )
 
         var recevedState: ImageLoader.State?
-        sut.didChange
+        let didChange = sut.didChange
+
+        didChange
             .filter {
                 if case .loading = $0 {
                     return true
@@ -65,7 +67,7 @@ class LoadableImageTest: XCTestCase {
             )
             .store(in: &disposeBag)
 
-        sut.didChange
+        didChange
             .filter {
                 if case .loaded = $0 {
                     return true
