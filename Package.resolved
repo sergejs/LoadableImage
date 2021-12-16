@@ -5,45 +5,45 @@
         "package": "Cache",
         "repositoryURL": "https://github.com/sergejs/Cache.git",
         "state": {
-          "branch": "main",
-          "revision": "f1f0491c8e07fc19dd1b817ea25efa43a08acca2",
-          "version": null
+          "branch": null,
+          "revision": "e3649dcd5cc586ba1887492e39a22d946eb28c25",
+          "version": "0.2.0"
         }
       },
       {
         "package": "Encryptable",
         "repositoryURL": "https://github.com/sergejs/Encryptable.git",
         "state": {
-          "branch": "main",
-          "revision": "99b5f65792d1c4969e5d3130dade602b88bdc6d8",
-          "version": null
+          "branch": null,
+          "revision": "4b41d656a6112e64dfc6c1e00602c0f05c752b07",
+          "version": "0.2.0"
         }
       },
       {
         "package": "HTTPClient",
         "repositoryURL": "https://github.com/sergejs/HTTPClient.git",
         "state": {
-          "branch": "main",
-          "revision": "a616b74d6d844565fbca0d80ea51977b3aaa0e4b",
-          "version": null
+          "branch": null,
+          "revision": "b47531c0275438e40726dfc26992da67a398f3a6",
+          "version": "0.2.0"
         }
       },
       {
         "package": "ServiceContainer",
         "repositoryURL": "https://github.com/sergejs/ServiceContainer.git",
         "state": {
-          "branch": "main",
-          "revision": "32aefea4b3e3c65bea577a913e91c660dcfea3b1",
-          "version": null
+          "branch": null,
+          "revision": "9fddea459393de1d06ad8ef7df3c264f5e98335c",
+          "version": "0.2.0"
         }
       },
       {
         "package": "Storable",
         "repositoryURL": "https://github.com/sergejs/Storable.git",
         "state": {
-          "branch": "main",
-          "revision": "4031348913139dcf258c3b7b44e50081333334bc",
-          "version": null
+          "branch": null,
+          "revision": "d0ed45d3eabe38a9aa605ed2d8d271d2d2faa4cb",
+          "version": "0.2.0"
         }
       }
     ]

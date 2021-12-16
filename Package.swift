@@ -6,7 +6,10 @@ import PackageDescription
 let package = Package(
     name: "LoadableImageView",
     platforms: [
-        .iOS(.v15),
+        .macOS(.v10_15),
+        .iOS(.v13),
+        .watchOS(.v6),
+        .tvOS(.v13),
     ],
     products: [
         .library(
@@ -15,9 +18,9 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/sergejs/Cache.git", .branch("main")),
-        .package(url: "https://github.com/sergejs/HTTPClient.git", .branch("main")),
-        .package(url: "https://github.com/sergejs/ServiceContainer.git", .branch("main")),
+        .package(url: "https://github.com/sergejs/Cache.git", .upToNextMajor(from: "0.2.0")),
+        .package(url: "https://github.com/sergejs/HTTPClient.git", .upToNextMajor(from: "0.2.0")),
+        .package(url: "https://github.com/sergejs/ServiceContainer.git", .upToNextMajor(from: "0.2.0")),
     ],
     targets: [
         .target(
